@@ -6,12 +6,10 @@ try:
     from app.database import get_db
     import app.schemas as schemas
     import app.models as models
-    import app.oauth2 as oauth2
 except ImportError:
     from database import get_db
     import schemas
     import models
-    import oauth2
 
 
 router = APIRouter(prefix="/teams", tags=["Teams"])
