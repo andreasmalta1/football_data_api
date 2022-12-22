@@ -34,31 +34,6 @@ def home():
     return {"data": "home"}
 
 
-@app.post("/", status_code=status.HTTP_201_CREATED)
-def create_team(
-    team: schemas.TeamCreate,
-    db: Session = Depends(get_db),
-):
-
-    new_team = models.Team(**team.dict())
-    db.add(new_team)
-    db.commit()
-    db.refresh(new_team)
-    return new_team
-
-
-@app.get("/{id}")
-def get_team(id: int, db: Session = Depends(get_db)):
-    team = db.query(models.Team).filter(models.Team.id == id).first()
-
-    if not team:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Team with id {id} was not found",
-        )
-    return team
-
-
 @app.post("/uploadlogos/{id}", status_code=status.HTTP_201_CREATED)
 async def create_file(
     id: int, file: UploadFile = File(...), db: Session = Depends(get_db)

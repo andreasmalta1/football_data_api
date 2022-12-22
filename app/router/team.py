@@ -1,6 +1,5 @@
 from fastapi import Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
-from sqlalchemy import func
 from typing import List, Optional
 
 try:
@@ -14,23 +13,34 @@ except ImportError:
     import models
     import oauth2
 
-router = APIRouter(prefix="/posts", tags=["Posts"])
+
+router = APIRouter(prefix="/teams", tags=["Teams"])
 
 
-# @router.get("/", response_model=List[schemas.PostOut])
-@router.get("/")
-def get_posts(
+@router.post(
+    "/", status_code=status.HTTP_201_CREATED, response_model=schemas.TeamResponse
+)
+def create_team(
+    team: schemas.TeamCreate,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user),
+):
+    new_team = models.Team(**team.dict())
+    db.add(new_team)
+    db.commit()
+    db.refresh(new_team)
+    return new_team
+
+
+@router.get("/", response_model=List[schemas.TeamResponse])
+def get_teams(
+    db: Session = Depends(get_db),
     limit: int = 10,
     skip: int = 0,
     search: Optional[str] = "",
 ):
 
     results = (
-        db.query(models.Post, func.count(models.Vote.post_id).label("votes"))
-        .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
-        .group_by(models.Post.id)
+        db.query(models.Post)
         .filter(models.Post.title.contains(search))
         .limit(limit)
         .offset(skip)
@@ -39,92 +49,51 @@ def get_posts(
     return results
 
 
-@router.post(
-    "/", status_code=status.HTTP_201_CREATED, response_model=schemas.PostResponse
-)
-def create_posts(
-    post: schemas.PostCreate,
-    db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user),
-):
-    new_post = models.Post(owner_id=current_user.id, **post.dict())
-    db.add(new_post)
-    db.commit()
-    db.refresh(new_post)
-    return new_post
+@router.get("/{id}", response_model=schemas.TeamResponse)
+def get_team(id: int, db: Session = Depends(get_db)):
+    team = db.query(models.Team).filter(models.Team.id == id).first()
 
-
-@router.get("/{id}", response_model=schemas.PostOut)
-def get_post(
-    id: int,
-    db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user),
-):
-    post = (
-        db.query(models.Post, func.count(models.Vote.post_id).label("votes"))
-        .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
-        .group_by(models.Post.id)
-        .filter(models.Post.id == id)
-        .first()
-    )
-
-    if not post:
+    if not team:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Post with id {id} was not found",
+            detail=f"Team with id {id} was not found",
         )
-    return post
+    return team
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(
     id: int,
     db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user),
 ):
-    post_query = db.query(models.Post).filter(models.Post.id == id)
-    post = post_query.first()
+    team_query = db.query(models.Team).filter(models.Team.id == id)
+    team = team_query.first()
 
-    if post == None:
+    if team == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with id {id} was not found",
         )
 
-    if post.owner_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to perform requested action",
-        )
-
-    post_query.delete(synchronize_session=False)
+    team_query.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.put("/{id}", response_model=schemas.PostResponse)
+@router.put("/{id}", response_model=schemas.TeamResponse)
 def update_post(
-    id: int,
-    updated_post: schemas.PostCreate,
-    db: Session = Depends(get_db),
-    current_user: int = Depends(oauth2.get_current_user),
+    id: int, updated_post: schemas.TeamCreate, db: Session = Depends(get_db)
 ):
-    post_query = db.query(models.Post).filter(models.Post.id == id)
-    post = post_query.first()
+    team_query = db.query(models.Team).filter(models.Team.id == id)
+    team = team_query.first()
 
-    if post == None:
+    if team == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Post with id {id} was not found",
         )
 
-    if post.owner_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to perform requested action",
-        )
-
-    post_query.update(updated_post.dict(), synchronize_session=False)
+    team_query.update(updated_post.dict(), synchronize_session=False)
     db.commit()
 
-    return post_query.first()
+    return team_query.first()
