@@ -62,13 +62,32 @@ async def create_logo(
     # img.save(generated_name)
 
     file.close()
-    setattr(team, "url", logo_file_name)
+    setattr(team, "logo_url_small", logo_file_name)
+    setattr(team, "logo_url_medium", logo_file_name)
+    setattr(team, "logo_url_large", logo_file_name)
 
     db.add(team)
     db.commit()
     db.refresh(team)
 
     return team
+
+
+@router.get("/{id}")
+def get_team(id: int, db: Session = Depends(get_db)):
+    team = db.query(models.Team).filter(models.Team.id == id).first()
+    urls = {
+        "logo_url_small": getattr(team, "logo_url_small"),
+        "logo_url_medium": getattr(team, "logo_url_medium"),
+        "logo_url_large": getattr(team, "logo_url_large"),
+    }
+
+    if not team:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Team with id {id} was not found",
+        )
+    return {"logo_urls": urls}
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -85,14 +104,17 @@ def delete_logo(
             detail=f"Team with id {id} was not found",
         )
 
-    logo = getattr(team, "url")
-    if not logo:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Logo for team with id {id} was not found",
-        )
-    os.remove(logo)
-    setattr(team, "url", None)
+    logo_urls = ["logo_url_small", "logo_url_medium", "logo_url_large"]
+    for url in logo_urls:
+        logo = getattr(team, url)
+        if not logo:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Logo for team with id {id} was not found",
+            )
+
+        os.remove(logo)
+        setattr(team, url, None)
 
     db.add(team)
     db.commit()

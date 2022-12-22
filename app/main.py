@@ -37,3 +37,5 @@ def home():
 
 # Add response dictionairy of url
 # Add get all urls of one 1 logo in schemas for teams
+# Test new functionality esp for logos (delete/update)
+# Resize images and different files for each size
