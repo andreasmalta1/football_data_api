@@ -1,11 +1,11 @@
 from fastapi import (
-    Response,
     status,
-    HTTPException,
-    Depends,
     APIRouter,
-    File,
+    HTTPException,
+    Response,
     UploadFile,
+    Depends,
+    File,
 )
 from sqlalchemy.orm import Session
 from PIL import Image
@@ -46,7 +46,7 @@ async def create_logo(
     if extension != "jpg":
         raise HTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-            detail=f"Logo format must be .jpg",
+            detail="Logo format must be .jpg",
         )
 
     team_name = getattr(team, "name").lower().replace(" ", "_")
@@ -82,12 +82,16 @@ def delete_logo(
     if team == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Post with id {id} was not found",
+            detail=f"Team with id {id} was not found",
         )
 
-    logo_name = getattr(team, "url")
-    print(logo_name)
-    os.remove(logo_name)
+    logo = getattr(team, "url")
+    if not logo:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Logo for team with id {id} was not found",
+        )
+    os.remove(logo)
     setattr(team, "url", None)
 
     db.add(team)

@@ -19,7 +19,7 @@ class TeamUpdate(BaseModel):
 class TeamResponse(TeamBase):
     id: int
     name: str
-    url: str
+    url: Optional[str]
     created_at: datetime
 
     class Config:
