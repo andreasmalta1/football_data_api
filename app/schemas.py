@@ -4,23 +4,47 @@ from typing import Optional
 
 
 class TeamBase(BaseModel):
+    full_name: str
     name: str
-    url: Optional[str]
+    code: Optional[str]
+    nickname: Optional[str]
+    stadium: Optional[str]
+    competition: Optional[str]
+    logo_url_small: Optional[str]
+    logo_url_medium: Optional[str]
+    logo_url_large: Optional[str]
+    website: Optional[str]
+    twitter_handle: Optional[str]
+    national_team: Optional[bool]
+    year_formed: Optional[int]
+    football_assosciation: Optional[str]
 
 
 class TeamCreate(TeamBase):
     pass
 
 
-class TeamUpdate(BaseModel):
-    url: str
-
-
 class TeamResponse(TeamBase):
     id: int
-    name: str
-    url: Optional[str]
     created_at: datetime
 
     class Config:
         orm_mode = True
+
+
+class LogoBase(BaseModel):
+    logo_url_small: str
+    logo_url_medium: str
+    logo_url_large: str
+
+
+class LogoCreate(LogoBase):
+    pass
+
+
+class LogoUpdate(LogoBase):
+    pass
+
+
+class LogoReponse(LogoBase):
+    id: int

@@ -32,3 +32,8 @@ def home():
 
 # Build table/tables
 # Figure out size for medium large and small images
+# Additional functionality??
+
+
+# Add response dictionairy of url
+# Add get all urls of one 1 logo in schemas for teams

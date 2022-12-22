@@ -13,8 +13,20 @@ class Team(Base):
     __tablename__ = "teams"
 
     id = Column(Integer, primary_key=True, nullable=False)
-    name = Column(String, nullable=False, unique=True)
-    url = Column(String, nullable=True)
+    full_name = Column(String, nullable=False)
+    name = Column(String, nullable=False)
+    code = Column(String, nullable=True)
+    nickname = Column(String, nullable=True)
+    stadium = Column(String, nullable=True)
+    competition = Column(String, nullable=True)
+    logo_url_small = Column(String, nullable=True)
+    logo_url_medium = Column(String, nullable=True)
+    logo_url_large = Column(String, nullable=True)
+    website = Column(String, nullable=True)
+    twitter_handle = Column(String, nullable=True)
+    national_team = Column(Boolean, server_default="False")
+    year_formed = Column(Integer, nullable=True)
+    football_assosciation = Column(String, nullable=True)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
