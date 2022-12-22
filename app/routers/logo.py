@@ -73,7 +73,8 @@ async def create_logo(
     return team
 
 
-@router.get("/{id}")
+# @router.get("/{id}")
+@router.get("/{id}", response_model=schemas.LogoResponse)
 def get_team(id: int, db: Session = Depends(get_db)):
     team = db.query(models.Team).filter(models.Team.id == id).first()
     urls = {

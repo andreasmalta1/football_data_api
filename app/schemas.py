@@ -1,6 +1,12 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
+
+
+class LogoBase(BaseModel):
+    logo_url_small: str
+    logo_url_medium: str
+    logo_url_large: str
 
 
 class TeamBase(BaseModel):
@@ -10,9 +16,7 @@ class TeamBase(BaseModel):
     nickname: Optional[str]
     stadium: Optional[str]
     competition: Optional[str]
-    logo_url_small: Optional[str]
-    logo_url_medium: Optional[str]
-    logo_url_large: Optional[str]
+    urls: Union[LogoBase, None]
     website: Optional[str]
     twitter_handle: Optional[str]
     national_team: Optional[bool]
@@ -32,19 +36,5 @@ class TeamResponse(TeamBase):
         orm_mode = True
 
 
-class LogoBase(BaseModel):
-    logo_url_small: str
-    logo_url_medium: str
-    logo_url_large: str
-
-
-class LogoCreate(LogoBase):
-    pass
-
-
-class LogoUpdate(LogoBase):
-    pass
-
-
-class LogoReponse(LogoBase):
-    id: int
+class LogoResponse(BaseModel):
+    logo_urls: Union[LogoBase, None] = None
