@@ -77,11 +77,11 @@ async def create_logo(
 @router.get("/{id}", response_model=schemas.LogoResponse)
 def get_team(id: int, db: Session = Depends(get_db)):
     team = db.query(models.Team).filter(models.Team.id == id).first()
-    urls = {
-        "logo_url_small": getattr(team, "logo_url_small"),
-        "logo_url_medium": getattr(team, "logo_url_medium"),
-        "logo_url_large": getattr(team, "logo_url_large"),
-    }
+    urls = [
+        {"logo_url_small": getattr(team, "logo_url_small")},
+        {"logo_url_medium": getattr(team, "logo_url_medium")},
+        {"logo_url_large": getattr(team, "logo_url_large")},
+    ]
 
     if not team:
         raise HTTPException(
