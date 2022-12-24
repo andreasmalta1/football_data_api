@@ -35,9 +35,8 @@ def home():
 # Additional functionality??
 
 
-# Add response dictionairy of url
-# Test new functionality esp for logos (delete/update)
 # Resize images and different files for each size
+# Logos in different folders according to size
 
 
-# For schema of team respones, adjust dict in get function
+# Test new functionality esp for logos (delete/update)

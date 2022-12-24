@@ -38,8 +38,8 @@ def get_teams(
 ):
 
     results = (
-        db.query(models.Post)
-        .filter(models.Post.title.contains(search))
+        db.query(models.Team)
+        .filter(models.Team.full_name.contains(search))
         .limit(limit)
         .offset(skip)
         .all()
@@ -60,7 +60,7 @@ def get_team(id: int, db: Session = Depends(get_db)):
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(
+def delete_team(
     id: int,
     db: Session = Depends(get_db),
 ):
@@ -70,7 +70,7 @@ def delete_post(
     if team == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Post with id {id} was not found",
+            detail=f"Team with id {id} was not found",
         )
 
     team_query.delete(synchronize_session=False)
@@ -79,8 +79,8 @@ def delete_post(
 
 
 @router.put("/{id}", response_model=schemas.TeamResponse)
-def update_post(
-    id: int, updated_post: schemas.TeamCreate, db: Session = Depends(get_db)
+def update_team(
+    id: int, updated_team: schemas.TeamCreate, db: Session = Depends(get_db)
 ):
     team_query = db.query(models.Team).filter(models.Team.id == id)
     team = team_query.first()
@@ -88,10 +88,10 @@ def update_post(
     if team == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Post with id {id} was not found",
+            detail=f"Team with id {id} was not found",
         )
 
-    team_query.update(updated_post.dict(), synchronize_session=False)
+    team_query.update(updated_team.dict(), synchronize_session=False)
     db.commit()
 
     return team_query.first()
