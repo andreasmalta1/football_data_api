@@ -25,7 +25,10 @@ router = APIRouter(prefix="/logos", tags=["Logos"])
 
 
 @router.post(
-    "/{id}", status_code=status.HTTP_201_CREATED, response_model=schemas.TeamResponse
+    "/{id}",
+    status_code=status.HTTP_201_CREATED,
+    response_model=schemas.TeamResponse,
+    include_in_schema=False,
 )
 async def create_logo(
     id: int, file: UploadFile = File(...), db: Session = Depends(get_db)
@@ -112,7 +115,7 @@ def get_logos(id: int, db: Session = Depends(get_db)):
     return {"logo_urls": urls}
 
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, include_in_schema=False)
 def delete_logo(
     id: int,
     db: Session = Depends(get_db),

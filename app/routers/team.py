@@ -16,7 +16,10 @@ router = APIRouter(prefix="/teams", tags=["Teams"])
 
 
 @router.post(
-    "/", status_code=status.HTTP_201_CREATED, response_model=schemas.TeamResponse
+    "/",
+    status_code=status.HTTP_201_CREATED,
+    response_model=schemas.TeamResponse,
+    include_in_schema=False,
 )
 def create_team(
     team: schemas.TeamCreate,
@@ -59,7 +62,7 @@ def get_team(id: int, db: Session = Depends(get_db)):
     return team
 
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, include_in_schema=False)
 def delete_team(
     id: int,
     db: Session = Depends(get_db),
@@ -78,7 +81,7 @@ def delete_team(
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.put("/{id}", response_model=schemas.TeamResponse)
+@router.put("/{id}", response_model=schemas.TeamResponse, include_in_schema=False)
 def update_team(
     id: int, updated_team: schemas.TeamCreate, db: Session = Depends(get_db)
 ):

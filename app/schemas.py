@@ -17,7 +17,7 @@ class TeamBase(BaseModel):
     twitter_handle: Optional[str]
     national_team: Optional[bool]
     year_formed: Optional[int]
-    football_assosciation: Optional[str]
+    country: Optional[str]
 
 
 class TeamCreate(TeamBase):
