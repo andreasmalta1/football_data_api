@@ -6,10 +6,12 @@ try:
     from app.database import get_db
     import app.schemas as schemas
     import app.models as models
+    import app.oauth2 as oauth2
 except ImportError:
     from database import get_db
     import schemas
     import models
+    import oauth2
 
 
 router = APIRouter(prefix="/teams", tags=["Teams"])
@@ -23,8 +25,16 @@ router = APIRouter(prefix="/teams", tags=["Teams"])
 )
 def create_team(
     team: schemas.TeamCreate,
+    current_user: int = Depends(oauth2.get_current_user),
     db: Session = Depends(get_db),
 ):
+
+    if current_user.id != 1:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Unauthorized action",
+        )
+
     new_team = models.Team(**team.dict())
     db.add(new_team)
     db.commit()
@@ -65,8 +75,16 @@ def get_team(id: int, db: Session = Depends(get_db)):
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, include_in_schema=False)
 def delete_team(
     id: int,
+    current_user: int = Depends(oauth2.get_current_user),
     db: Session = Depends(get_db),
 ):
+
+    if current_user.id != 1:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Unauthorized action",
+        )
+
     team_query = db.query(models.Team).filter(models.Team.id == id)
     team = team_query.first()
 
@@ -83,8 +101,18 @@ def delete_team(
 
 @router.put("/{id}", response_model=schemas.TeamResponse, include_in_schema=False)
 def update_team(
-    id: int, updated_team: schemas.TeamCreate, db: Session = Depends(get_db)
+    id: int,
+    updated_team: schemas.TeamCreate,
+    current_user: int = Depends(oauth2.get_current_user),
+    db: Session = Depends(get_db),
 ):
+
+    if current_user.id != 1:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Unauthorized action",
+        )
+
     team_query = db.query(models.Team).filter(models.Team.id == id)
     team = team_query.first()
 

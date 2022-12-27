@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 from typing import Optional, Dict, List
 
@@ -47,4 +47,13 @@ class TeamResponse(TeamBase):
 
 
 class LogoResponse(BaseModel):
-    logo_urls: List[Dict[str, None]]
+    logo_urls: List[Dict[str, str]] = Field(nullable=True)
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    id: Optional[str] = None

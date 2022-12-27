@@ -15,10 +15,12 @@ try:
     from app.database import get_db
     import app.schemas as schemas
     import app.models as models
+    import app.oauth2 as oauth2
 except ImportError:
     from database import get_db
     import schemas
     import models
+    import oauth2
 
 
 router = APIRouter(prefix="/logos", tags=["Logos"])
@@ -31,8 +33,17 @@ router = APIRouter(prefix="/logos", tags=["Logos"])
     include_in_schema=False,
 )
 async def create_logo(
-    id: int, file: UploadFile = File(...), db: Session = Depends(get_db)
+    id: int,
+    file: UploadFile = File(...),
+    current_user: int = Depends(oauth2.get_current_user),
+    db: Session = Depends(get_db),
 ):
+
+    if current_user.id != 1:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Unauthorized action",
+        )
 
     team_query = db.query(models.Team).filter(models.Team.id == id)
     team = team_query.first()
@@ -101,25 +112,38 @@ async def create_logo(
 @router.get("/{id}", response_model=schemas.LogoResponse)
 def get_logos(id: int, db: Session = Depends(get_db)):
     team = db.query(models.Team).filter(models.Team.id == id).first()
-    urls = [
-        {"logo_url_small": getattr(team, "logo_url_small")},
-        {"logo_url_medium": getattr(team, "logo_url_medium")},
-        {"logo_url_large": getattr(team, "logo_url_large")},
-    ]
 
     if not team:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Team with id {id} was not found",
         )
+
+    logo_types = ["logo_url_small", "logo_url_medium", "logo_url_large"]
+    urls = []
+    for logo in logo_types:
+        logo_url = getattr(team, logo)
+        if not logo_url:
+            logo_url = ""
+
+        urls.append({logo: logo_url})
+
     return {"logo_urls": urls}
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, include_in_schema=False)
 def delete_logo(
     id: int,
+    current_user: int = Depends(oauth2.get_current_user),
     db: Session = Depends(get_db),
 ):
+
+    if current_user.id != 1:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Unauthorized action",
+        )
+
     team_query = db.query(models.Team).filter(models.Team.id == id)
     team = team_query.first()
 

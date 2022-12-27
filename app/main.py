@@ -4,9 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 try:
-    from app.routers import team, logo, user
+    from app.routers import team, logo, user, auth
 except ImportError as e:
-    from routers import team, logo, user
+    from routers import team, logo, user, auth
 
 app = FastAPI()
 
@@ -14,6 +14,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(team.router)
 app.include_router(logo.router)
 app.include_router(user.router)
+app.include_router(auth.router)
 
 origins = ["*"]
 
@@ -25,13 +26,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# API Key -> https://testdriven.io/tips/6840e037-4b8f-4354-a9af-6863fb1c69eb/
-# Only Admin can post
-
 # New Tables for future
 # Competetion
 # Stadium
 
 
 # https://www.akana.com/blog/what-is-api-monetization
+# https://www.linkedin.com/pulse/9-ways-promote-your-api-gj-de-wilde-we-re-hiring-/
