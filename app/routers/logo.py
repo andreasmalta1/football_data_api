@@ -43,28 +43,52 @@ async def create_logo(
     logos_path = "./static/images/"
     filename = file.filename
     extension = filename.split(".")[1]
-    if extension != "jpg":
+    if extension not in ["jpg", "png", "svg"]:
         raise HTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             detail="Logo format must be .jpg",
         )
 
     team_name = getattr(team, "name").lower().replace(" ", "_")
-    logo_file_name = f"{logos_path}{team_name}-{id}.{extension}"
     file_content = await file.read()
 
-    with open(logo_file_name, "wb") as file:
-        file.write(file_content)
+    logo_types = {
+        "logo_file_name_small": {
+            "path": f"{logos_path}small/{team_name}-{id}.{extension}",
+            "size": 200,
+            "field": "logo_url_small",
+        },
+        "logo_file_name_medium": {
+            "path": f"{logos_path}medium/{team_name}-{id}.{extension}",
+            "size": 600,
+            "field": "logo_url_medium",
+        },
+        "logo_file_name_large": {
+            "path": f"{logos_path}large/{team_name}-{id}.{extension}",
+            "size": 1200,
+            "field": "logo_url_large",
+        },
+    }
 
-    # Resize
-    # img = Image.open(generated_name)
-    # img = img.resize(size=(200, 200))
-    # img.save(generated_name)
+    for logo in logo_types:
+        with open(logo_types.get(logo).get("path"), "wb") as file:
+            file.write(file_content)
+
+        img = Image.open(logo_types.get(logo).get("path"))
+        img = img.resize(
+            size=(logo_types.get(logo).get("size"), logo_types.get(logo).get("size"))
+        )
+        img.save(logo_types.get(logo).get("path"))
+
+        setattr(
+            team,
+            logo_types.get(logo).get("field"),
+            logo_types.get(logo).get("path"),
+        )
+        print(logo_types.get(logo).get("field"))
+        print(logo_types.get(logo).get("path"))
 
     file.close()
-    setattr(team, "logo_url_small", logo_file_name)
-    setattr(team, "logo_url_medium", logo_file_name)
-    setattr(team, "logo_url_large", logo_file_name)
 
     db.add(team)
     db.commit()
@@ -73,9 +97,8 @@ async def create_logo(
     return team
 
 
-# @router.get("/{id}")
 @router.get("/{id}", response_model=schemas.LogoResponse)
-def get_team(id: int, db: Session = Depends(get_db)):
+def get_logos(id: int, db: Session = Depends(get_db)):
     team = db.query(models.Team).filter(models.Team.id == id).first()
     urls = [
         {"logo_url_small": getattr(team, "logo_url_small")},
