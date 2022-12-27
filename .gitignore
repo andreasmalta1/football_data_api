@@ -2,5 +2,4 @@ env
 __pycache__
 .env
 static
-service_account.json
-test.py
+post_data

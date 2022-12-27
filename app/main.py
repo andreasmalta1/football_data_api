@@ -4,15 +4,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 try:
-    from app.routers import team, logo
+    from app.routers import team, logo, user
 except ImportError as e:
-    from routers import team, logo
+    from routers import team, logo, user
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(team.router)
 app.include_router(logo.router)
+app.include_router(user.router)
 
 origins = ["*"]
 
@@ -23,11 +24,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.get("/")
-def home():
-    return {"data": "home"}
 
 
 # API Key -> https://testdriven.io/tips/6840e037-4b8f-4354-a9af-6863fb1c69eb/
