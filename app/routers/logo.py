@@ -85,8 +85,6 @@ async def create_logo(
             logo_types.get(logo).get("field"),
             logo_types.get(logo).get("path"),
         )
-        print(logo_types.get(logo).get("field"))
-        print(logo_types.get(logo).get("path"))
 
     file.close()
 

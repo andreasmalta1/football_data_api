@@ -30,16 +30,9 @@ def home():
     return {"data": "home"}
 
 
-# Build table/tables
-# Figure out size for medium large and small images
-# Additional functionality??
-
-
-# Resize images and different files for each size
-# Logos in different folders according to size
-
-
-# Test new functionality esp for logos (delete/update)
-
 # API Key -> https://testdriven.io/tips/6840e037-4b8f-4354-a9af-6863fb1c69eb/
-# Onky Admin can post
+# Only Admin can post
+
+# New Tables for future
+# Competetion
+# Stadium
