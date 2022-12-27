@@ -33,4 +33,4 @@ class TeamResponse(TeamBase):
 
 
 class LogoResponse(BaseModel):
-    logo_urls: List[Dict[str, str]]
+    logo_urls: List[Dict[str, None]]
