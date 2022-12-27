@@ -26,7 +26,7 @@ class Team(Base):
     twitter_handle = Column(String, nullable=True)
     national_team = Column(Boolean, server_default="False")
     year_formed = Column(Integer, nullable=True)
-    football_assosciation = Column(String, nullable=True)
+    country = Column(String, nullable=True)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )

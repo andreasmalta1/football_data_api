@@ -38,7 +38,7 @@ def upgrade() -> None:
         sa.Column("twitter_handle", sa.String(), nullable=True),
         sa.Column("national_team", sa.String(), nullable=True),
         sa.Column("year_formed", sa.Integer(), nullable=True),
-        sa.Column("football_assosciation", sa.Integer(), nullable=True),
+        sa.Column("country", sa.String(), nullable=True),
         sa.Column("url", sa.String(), nullable=True),
         sa.Column(
             "created_at",

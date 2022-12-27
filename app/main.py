@@ -36,3 +36,6 @@ def home():
 # New Tables for future
 # Competetion
 # Stadium
+
+
+# https://www.akana.com/blog/what-is-api-monetization
