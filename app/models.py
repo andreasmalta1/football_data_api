@@ -31,6 +31,7 @@ class Team(Base):
     record_num_appearances = Column(Integer, nullable=False, server_default=text("0"))
     player_record_goals = Column(String, nullable=True)
     record_num_goals = Column(Integer, nullable=False, server_default=text("0"))
+    num_domestic_champions = Column(Integer, nullable=False, server_default=text("0"))
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )

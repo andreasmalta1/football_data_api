@@ -51,6 +51,12 @@ def upgrade() -> None:
             "record_num_goals", sa.Integer(), nullable=True, server_default=sa.text("0")
         ),
         sa.Column(
+            "num_domestic_champions",
+            sa.Integer(),
+            nullable=True,
+            server_default=sa.text("0"),
+        ),
+        sa.Column(
             "created_at",
             sa.TIMESTAMP(timezone=True),
             server_default=sa.text("now()"),
