@@ -31,14 +31,25 @@ def upgrade() -> None:
         sa.Column("nickname", sa.String(), nullable=True),
         sa.Column("stadium", sa.String(), nullable=True),
         sa.Column("competition", sa.String(), nullable=True),
+        sa.Column("country", sa.String(), nullable=True),
         sa.Column("logo_url_small", sa.String(), nullable=True),
         sa.Column("logo_url_medium", sa.String(), nullable=True),
         sa.Column("logo_url_large", sa.String(), nullable=True),
-        sa.Column("website", sa.String(), nullable=True),
         sa.Column("twitter_handle", sa.String(), nullable=True),
+        sa.Column("website", sa.String(), nullable=True),
         sa.Column("national_team", sa.String(), nullable=True),
         sa.Column("year_formed", sa.Integer(), nullable=True),
-        sa.Column("country", sa.String(), nullable=True),
+        sa.Column("player_record_appearances", sa.String(), nullable=True),
+        sa.Column(
+            "record_num_appearances",
+            sa.Integer(),
+            nullable=True,
+            server_default=sa.text("0"),
+        ),
+        sa.Column("player_record_goals", sa.String(), nullable=True),
+        sa.Column(
+            "record_num_goals", sa.Integer(), nullable=True, server_default=sa.text("0")
+        ),
         sa.Column(
             "created_at",
             sa.TIMESTAMP(timezone=True),

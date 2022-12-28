@@ -30,7 +30,8 @@ app.add_middleware(
 # Competition
 # Stadium
 
-# Add players records
+# Add team players records
+# Add team cup wins
 
 
 # https://www.akana.com/blog/what-is-api-monetization
