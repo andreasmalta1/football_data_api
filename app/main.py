@@ -27,8 +27,10 @@ app.add_middleware(
 )
 
 # New Tables for future
-# Competetion
+# Competition
 # Stadium
+
+# Add players records
 
 
 # https://www.akana.com/blog/what-is-api-monetization

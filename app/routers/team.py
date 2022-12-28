@@ -1,6 +1,7 @@
 from fastapi import status, APIRouter, HTTPException, Response, Depends
 from sqlalchemy.orm import Session
 from typing import List, Optional
+import random
 
 try:
     from app.database import get_db
@@ -58,6 +59,19 @@ def get_teams(
         .all()
     )
     return results
+
+
+@router.get("/random", response_model=schemas.TeamResponse)
+def get_random_team(db: Session = Depends(get_db)):
+
+    results = db.query(models.Team).all()
+    if not results:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No teams found",
+        )
+    team = random.choice(results)
+    return team
 
 
 @router.get("/{id}", response_model=schemas.TeamResponse)
