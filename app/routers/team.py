@@ -41,6 +41,43 @@ APP_FIELDS = ["player_record_appearances", "record_num_appearances"]
 GOAL_FIELDS = ["player_record_goals", "record_num_goals"]
 
 
+def get_team_return(team):
+    team_return = {}
+    for field in FIELDS:
+        team_return[field] = getattr(team, field)
+
+        logo_urls = []
+
+        for logo in LOGO_FIELDS:
+            logo_url = getattr(team, logo)
+            if not logo_url:
+                logo_url = ""
+
+            logo_urls.append({logo: logo_url})
+
+        team_return["logo_urls"] = logo_urls
+
+        record_appearances = {}
+        for field in APP_FIELDS:
+            app_field = getattr(team, field)
+            if not app_field:
+                app_field = ""
+            record_appearances[field] = app_field
+
+        team_return["record_appearances"] = record_appearances
+
+        record_goals = {}
+        for field in GOAL_FIELDS:
+            goals_field = getattr(team, field)
+            if not goals_field:
+                goals_field = ""
+            record_goals[field] = goals_field
+
+        team_return["record_goals"] = record_goals
+
+    return team_return
+
+
 @router.post(
     "/",
     status_code=status.HTTP_201_CREATED,
@@ -81,7 +118,10 @@ def get_teams(
         .offset(skip)
         .all()
     )
-    return results
+
+    return_results = [get_team_return(team) for team in results]
+
+    return return_results
 
 
 @router.get("/random", response_model=schemas.TeamResponse)
@@ -94,7 +134,9 @@ def get_random_team(db: Session = Depends(get_db)):
             detail=f"No teams found",
         )
     team = random.choice(results)
-    return team
+    team_return = get_team_return(team)
+
+    return team_return
 
 
 @router.get("/{id}", response_model=schemas.TeamResponse)
@@ -107,34 +149,7 @@ def get_team(id: int, db: Session = Depends(get_db)):
             detail=f"Team with id {id} was not found",
         )
 
-    team_return = {}
-    for field in FIELDS:
-        team_return[field] = getattr(team, field)
-
-    logo_urls = []
-
-    for logo in LOGO_FIELDS:
-        logo_url = getattr(team, logo)
-        if not logo_url:
-            logo_url = ""
-
-        logo_urls.append({logo: logo_url})
-
-    team_return["logo_urls"] = logo_urls
-
-    record_appearances = {}
-    for field in APP_FIELDS:
-        app_field = getattr(team, field)
-        record_appearances[field] = app_field
-
-    team_return["record_appearances"] = record_appearances
-
-    record_goals = {}
-    for field in APP_FIELDS:
-        goals_field = getattr(team, field)
-        record_goals[field] = goals_field
-
-    team_return["record_goals"] = record_goals
+    team_return = get_team_return(team)
 
     return team_return
 

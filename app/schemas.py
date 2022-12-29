@@ -46,10 +46,11 @@ class TeamCreate(TeamBase):
 
 
 class TeamResponse(TeamBase):
-    id: int
-    created_at: datetime
     logo_urls: List[Dict[str, str]] = Field(nullable=True)
     record_appearances: Dict[str, str] = Field(nullable=True)
+    record_goals: Dict[str, str] = Field(nullable=True)
+    id: int
+    created_at: datetime
 
     class Config:
         orm_mode = True
