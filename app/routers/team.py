@@ -35,9 +35,7 @@ FIELDS = [
 ]
 
 LOGO_FIELDS = ["logo_url_small", "logo_url_medium", "logo_url_large"]
-
 APP_FIELDS = ["player_record_appearances", "record_num_appearances"]
-
 GOAL_FIELDS = ["player_record_goals", "record_num_goals"]
 
 
