@@ -24,23 +24,32 @@ class TeamBase(BaseModel):
     nickname: Optional[str]
     stadium: Optional[str]
     competition: Optional[str]
-    logo_url_small: Optional[str]
-    logo_url_medium: Optional[str]
-    logo_url_large: Optional[str]
     website: Optional[str]
     twitter_handle: Optional[str]
     national_team: Optional[bool]
     year_formed: Optional[int]
     country: Optional[str]
+    num_domestic_champions: Optional[int]
 
 
 class TeamCreate(TeamBase):
-    pass
+    logo_url_small: Optional[str]
+    logo_url_medium: Optional[str]
+    logo_url_large: Optional[str]
+    player_record_appearances: Optional[str]
+    record_num_appearances: Optional[int]
+    player_record_goals: Optional[str]
+    record_num_goals: Optional[int]
+
+    # class Config:
+    #     orm_mode = True
 
 
 class TeamResponse(TeamBase):
     id: int
     created_at: datetime
+    logo_urls: List[Dict[str, str]] = Field(nullable=True)
+    record_appearances: Dict[str, str] = Field(nullable=True)
 
     class Config:
         orm_mode = True
