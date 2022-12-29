@@ -41,9 +41,6 @@ class TeamCreate(TeamBase):
     player_record_goals: Optional[str]
     record_num_goals: Optional[int]
 
-    # class Config:
-    #     orm_mode = True
-
 
 class TeamResponse(TeamBase):
     logo_urls: List[Dict[str, str]] = Field(nullable=True)

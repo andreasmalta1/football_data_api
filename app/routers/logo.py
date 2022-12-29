@@ -179,9 +179,8 @@ def get_logos(id: int, db: Session = Depends(get_db)):
             detail=f"Team with id {id} was not found",
         )
 
-    logo_types = ["logo_url_small", "logo_url_medium", "logo_url_large"]
     urls = []
-    for logo in logo_types:
+    for logo in LOGO_FIELDS:
         logo_url = getattr(team, logo)
         if not logo_url:
             logo_url = ""
