@@ -12,7 +12,7 @@ except ImportError:
     import models
     import utils
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter(prefix="/api/users", tags=["Users"])
 
 
 @router.post(

@@ -43,9 +43,9 @@ class TeamCreate(TeamBase):
 
 
 class TeamResponse(TeamBase):
-    logo_urls: List[Dict[str, str]] = Field(nullable=True)
-    record_appearances: Dict[str, str] = Field(nullable=True)
-    record_goals: Dict[str, str] = Field(nullable=True)
+    logo_urls: Optional[List[Dict[str, str]]] = Field(nullable=True)
+    record_appearances: Optional[Dict[str, str]] = Field(nullable=True)
+    record_goals: Optional[Dict[str, str]] = Field(nullable=True)
     id: int
     created_at: datetime
 

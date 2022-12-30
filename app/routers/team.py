@@ -15,7 +15,7 @@ except ImportError:
     import oauth2
 
 
-router = APIRouter(prefix="/teams", tags=["Teams"])
+router = APIRouter(prefix="/api/teams", tags=["Teams"])
 
 FIELDS = [
     "id",

@@ -23,7 +23,7 @@ except ImportError:
     import oauth2
 
 
-router = APIRouter(prefix="/logos", tags=["Logos"])
+router = APIRouter(prefix="/api/logos", tags=["Logos"])
 
 FIELDS = [
     "id",

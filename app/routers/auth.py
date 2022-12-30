@@ -18,7 +18,7 @@ except ImportError:
 router = APIRouter(tags=["Authentication"])
 
 
-@router.post("/login", response_model=schemas.Token, include_in_schema=False)
+@router.post("/api/login", response_model=schemas.Token, include_in_schema=False)
 def login(
     user_credentials: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),

@@ -32,3 +32,6 @@ app.add_middleware(
 
 # https://www.akana.com/blog/what-is-api-monetization
 # https://www.linkedin.com/pulse/9-ways-promote-your-api-gj-de-wilde-we-re-hiring-/
+
+
+# Add host name in .env to add it to static files
