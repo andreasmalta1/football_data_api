@@ -1,4 +1,4 @@
-from fastapi import status, APIRouter, HTTPException, Response, Depends
+from fastapi import status, APIRouter, HTTPException, Response, Depends, Request
 from sqlalchemy.orm import Session
 from typing import List, Optional
 import random
@@ -103,6 +103,7 @@ def create_team(
 
 @router.get("/", response_model=List[schemas.TeamResponse])
 def get_teams(
+    request: Request,
     db: Session = Depends(get_db),
     limit: int = 10,
     skip: int = 0,
@@ -116,6 +117,13 @@ def get_teams(
         .offset(skip)
         .all()
     )
+
+    print(request["path"])
+    print(request.client.host)
+    print(request.client.port)
+    # time
+    # Add table
+    # Special route - have to be logged in - counts total number of requests made for each path for each method. Use count like in the tutorial.
 
     return_results = [get_team_return(team) for team in results]
 

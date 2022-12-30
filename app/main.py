@@ -34,4 +34,7 @@ app.add_middleware(
 # https://www.linkedin.com/pulse/9-ways-promote-your-api-gj-de-wilde-we-re-hiring-/
 
 
-# Add host name in .env to add it to static files
+# 1. Add host name in .env to add it to static files
+# 2. Get number of requests made: https://fastapi.tiangolo.com/advanced/using-request-directly/
+# 3. Check images folder. Keep in mind that new image structure will be added for stadia
+# 4. Add index home page - to add links to GitHub, LinkedIn, Docs, how to use
