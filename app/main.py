@@ -8,6 +8,23 @@ try:
 except ImportError as e:
     from routers import team, logo, user, auth
 
+app = FastAPI(
+    title="Football Data Api",
+    description="API for football data containibg teams in Europe's top 5 leagues and beyond, stadiums and competions and corresponding logos",
+    version="0.0.1",
+    terms_of_service="",
+    contact={
+        "name": "Andreas Calleja",
+        "url": "",
+        "email": "andreascalleja@gmail.com",
+    },
+    license_info={
+        "name": "Apache 2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
+    },
+)
+
+
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -35,6 +52,7 @@ app.add_middleware(
 
 
 # 1. Add host name in .env to add it to static files
+# Added. Need to remove the ./
 # 2. Get number of requests made: https://fastapi.tiangolo.com/advanced/using-request-directly/
 # 3. Check images folder. Keep in mind that new image structure will be added for stadia
 # 4. Add index home page - to add links to GitHub, LinkedIn, Docs, how to use
