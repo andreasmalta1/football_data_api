@@ -15,14 +15,14 @@ import os
 try:
     from app.database import get_db
     from app.config import settings
-    from app.utils import post_request
+    from app.utils import post_request, get_team_return
     import app.schemas as schemas
     import app.models as models
     import app.oauth2 as oauth2
 except ImportError:
     from database import get_db
     from config import settings
-    from utils import post_request
+    from utils import post_request, get_team_return
     import schemas
     import models
     import oauth2
@@ -30,63 +30,7 @@ except ImportError:
 
 router = APIRouter(prefix="/api/logos", tags=["Logos"])
 
-FIELDS = [
-    "id",
-    "full_name",
-    "name",
-    "code",
-    "nickname",
-    "stadium",
-    "competition",
-    "website",
-    "twitter_handle",
-    "national_team",
-    "year_formed",
-    "country",
-    "num_domestic_champions",
-    "created_at",
-]
-
 LOGO_FIELDS = ["logo_url_small", "logo_url_medium", "logo_url_large"]
-APP_FIELDS = ["player_record_appearances", "record_num_appearances"]
-GOAL_FIELDS = ["player_record_goals", "record_num_goals"]
-
-
-def get_team_return(team):
-    team_return = {}
-    for field in FIELDS:
-        team_return[field] = getattr(team, field)
-
-        logo_urls = []
-
-        for logo in LOGO_FIELDS:
-            logo_url = getattr(team, logo)
-            if not logo_url:
-                logo_url = ""
-
-            logo_urls.append({logo: logo_url})
-
-        team_return["logo_urls"] = logo_urls
-
-        record_appearances = {}
-        for field in APP_FIELDS:
-            app_field = getattr(team, field)
-            if not app_field:
-                app_field = ""
-            record_appearances[field] = app_field
-
-        team_return["record_appearances"] = record_appearances
-
-        record_goals = {}
-        for field in GOAL_FIELDS:
-            goals_field = getattr(team, field)
-            if not goals_field:
-                goals_field = ""
-            record_goals[field] = goals_field
-
-        team_return["record_goals"] = record_goals
-
-    return team_return
 
 
 @router.post(
