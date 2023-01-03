@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 try:
     from app.routers import auth, logo, request, team, user
 except ImportError:
-    from .routers import auth, logo, request, team, user
+    from routers import auth, logo, request, team, user
 
 app = FastAPI(
     title="Football Data Api",
