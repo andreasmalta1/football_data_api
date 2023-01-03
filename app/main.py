@@ -4,9 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 try:
-    from app.routers import team, logo, user, auth
-except ImportError as e:
-    from routers import team, logo, user, auth
+    from app.routers import auth, logo, request, team, user
+except ImportError:
+    from routers import auth, logo, request, team, user
 
 app = FastAPI(
     title="Football Data Api",
@@ -28,10 +28,11 @@ app = FastAPI(
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.include_router(team.router)
-app.include_router(logo.router)
-app.include_router(user.router)
 app.include_router(auth.router)
+app.include_router(logo.router)
+app.include_router(request.router)
+app.include_router(team.router)
+app.include_router(user.router)
 
 origins = ["*"]
 
@@ -50,7 +51,4 @@ app.add_middleware(
 # https://www.akana.com/blog/what-is-api-monetization
 # https://www.linkedin.com/pulse/9-ways-promote-your-api-gj-de-wilde-we-re-hiring-/
 
-# 2. Get number of requests made: https://fastapi.tiangolo.com/advanced/using-request-directly/
-# Get total number of get requests made for each endpoint if logged like in tutorial
-# 3. Check images folder. Keep in mind that new image structure will be added for stadia
 # 4. Add index home page - to add links to GitHub, LinkedIn, Docs, how to use
