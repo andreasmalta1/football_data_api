@@ -5,11 +5,13 @@ import random
 
 try:
     from app.database import get_db
+    from app.config import settings
     import app.schemas as schemas
     import app.models as models
     import app.oauth2 as oauth2
 except ImportError:
     from database import get_db
+    from config import settings
     import schemas
     import models
     import oauth2
@@ -50,6 +52,8 @@ def get_team_return(team):
             logo_url = getattr(team, logo)
             if not logo_url:
                 logo_url = ""
+            else:
+                logo_url = settings.host_site + logo_url[2:]
 
             logo_urls.append({logo: logo_url})
 
