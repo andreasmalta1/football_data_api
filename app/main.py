@@ -1,12 +1,14 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
+
 
 try:
     from app.routers import auth, logo, request, team, user
+    from app.backend.general_pages.route_homepage import general_pages_router
 except ImportError:
     from routers import auth, logo, request, team, user
+    from backend.general_pages.route_homepage import general_pages_router
 
 app = FastAPI(
     title="Football Data Api",
@@ -33,6 +35,7 @@ app.include_router(logo.router)
 app.include_router(request.router)
 app.include_router(team.router)
 app.include_router(user.router)
+app.include_router(general_pages_router)
 
 origins = ["*"]
 
@@ -52,3 +55,4 @@ app.add_middleware(
 # https://www.linkedin.com/pulse/9-ways-promote-your-api-gj-de-wilde-we-re-hiring-/
 
 # 4. Add index home page - to add links to GitHub, LinkedIn, Docs, how to use
+# https://www.fastapitutorial.com/blog/serving-html-fastapi/
