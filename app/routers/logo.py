@@ -62,7 +62,7 @@ async def create_logo(
             detail=f"Team with id {id} was not found",
         )
 
-    logos_path = "./static/images/"
+    logos_path = "./static/images/logos"
     filename = file.filename
     extension = filename.split(".")[1]
     if extension not in ["jpg", "png", "svg"]:
