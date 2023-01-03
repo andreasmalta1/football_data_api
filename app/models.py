@@ -46,3 +46,17 @@ class User(Base):
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
+
+
+class Requests(Base):
+    __tablename__ = "requests"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    endpoint = Column(String, nullable=False, unique=False)
+    method = Column(String, nullable=False, unique=False)
+    path = Column(String, nullable=False, unique=False)
+    client_host = Column(String, nullable=False, unique=False)
+    client_port = Column(String, nullable=False, unique=False)
+    created_at = Column(
+        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    )

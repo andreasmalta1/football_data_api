@@ -6,12 +6,14 @@ import random
 try:
     from app.database import get_db
     from app.config import settings
+    from app.utils import post_request
     import app.schemas as schemas
     import app.models as models
     import app.oauth2 as oauth2
 except ImportError:
     from database import get_db
     from config import settings
+    from utils import post_request
     import schemas
     import models
     import oauth2
@@ -87,6 +89,7 @@ def get_team_return(team):
     include_in_schema=False,
 )
 def create_team(
+    request: Request,
     team: schemas.TeamCreate,
     current_user: int = Depends(oauth2.get_current_user),
     db: Session = Depends(get_db),
@@ -102,6 +105,9 @@ def create_team(
     db.add(new_team)
     db.commit()
     db.refresh(new_team)
+
+    post_request(db, "teams", request)
+
     return new_team
 
 
@@ -122,20 +128,15 @@ def get_teams(
         .all()
     )
 
-    print(request["path"])
-    print(request.client.host)
-    print(request.client.port)
-    # time
-    # Add table
-    # Special route - have to be logged in - counts total number of requests made for each path for each method. Use count like in the tutorial.
-
     return_results = [get_team_return(team) for team in results]
+
+    post_request(db, "teams", request)
 
     return return_results
 
 
 @router.get("/random", response_model=schemas.TeamResponse)
-def get_random_team(db: Session = Depends(get_db)):
+def get_random_team(request: Request, db: Session = Depends(get_db)):
 
     results = db.query(models.Team).all()
     if not results:
@@ -146,11 +147,13 @@ def get_random_team(db: Session = Depends(get_db)):
     team = random.choice(results)
     team_return = get_team_return(team)
 
+    post_request(db, "teams", request)
+
     return team_return
 
 
 @router.get("/{id}", response_model=schemas.TeamResponse)
-def get_team(id: int, db: Session = Depends(get_db)):
+def get_team(id: int, request: Request, db: Session = Depends(get_db)):
     team = db.query(models.Team).filter(models.Team.id == id).first()
 
     if not team:
@@ -160,12 +163,14 @@ def get_team(id: int, db: Session = Depends(get_db)):
         )
 
     team_return = get_team_return(team)
+    post_request(db, "teams", request)
 
     return team_return
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, include_in_schema=False)
 def delete_team(
+    request: Request,
     id: int,
     current_user: int = Depends(oauth2.get_current_user),
     db: Session = Depends(get_db),
@@ -188,11 +193,15 @@ def delete_team(
 
     team_query.delete(synchronize_session=False)
     db.commit()
+
+    post_request(db, "teams", request)
+
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.put("/{id}", response_model=schemas.TeamResponse, include_in_schema=False)
 def update_team(
+    request: Request,
     id: int,
     updated_team: schemas.TeamCreate,
     current_user: int = Depends(oauth2.get_current_user),
@@ -216,5 +225,7 @@ def update_team(
 
     team_query.update(updated_team.dict(), synchronize_session=False)
     db.commit()
+
+    post_request(db, "teams", request)
 
     return team_query.first()

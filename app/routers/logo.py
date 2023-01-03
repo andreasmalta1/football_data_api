@@ -2,6 +2,7 @@ from fastapi import (
     status,
     APIRouter,
     HTTPException,
+    Request,
     Response,
     UploadFile,
     Depends,
@@ -14,12 +15,14 @@ import os
 try:
     from app.database import get_db
     from app.config import settings
+    from app.utils import post_request
     import app.schemas as schemas
     import app.models as models
     import app.oauth2 as oauth2
 except ImportError:
     from database import get_db
     from config import settings
+    from utils import post_request
     import schemas
     import models
     import oauth2
@@ -93,6 +96,7 @@ def get_team_return(team):
     include_in_schema=False,
 )
 async def create_logo(
+    request: Request,
     id: int,
     file: UploadFile = File(...),
     current_user: int = Depends(oauth2.get_current_user),
@@ -168,11 +172,13 @@ async def create_logo(
 
     team_return = get_team_return(team)
 
+    post_request(db, "logos", request)
+
     return team_return
 
 
 @router.get("/{id}", response_model=schemas.LogoResponse)
-def get_logos(id: int, db: Session = Depends(get_db)):
+def get_logos(request: Request, id: int, db: Session = Depends(get_db)):
     team = db.query(models.Team).filter(models.Team.id == id).first()
 
     if not team:
@@ -191,11 +197,14 @@ def get_logos(id: int, db: Session = Depends(get_db)):
 
         urls.append({logo: logo_url})
 
+    post_request(db, "logos", request)
+
     return {"logo_urls": urls}
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, include_in_schema=False)
 def delete_logo(
+    request: Request,
     id: int,
     current_user: int = Depends(oauth2.get_current_user),
     db: Session = Depends(get_db),
@@ -231,4 +240,7 @@ def delete_logo(
     db.add(team)
     db.commit()
     db.refresh(team)
+
+    post_request(db, "logos", request)
+
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -50,9 +50,7 @@ app.add_middleware(
 # https://www.akana.com/blog/what-is-api-monetization
 # https://www.linkedin.com/pulse/9-ways-promote-your-api-gj-de-wilde-we-re-hiring-/
 
-
-# 1. Add host name in .env to add it to static files
-# Added. Need to remove the ./
 # 2. Get number of requests made: https://fastapi.tiangolo.com/advanced/using-request-directly/
+# Get total number of get requests made for each endpoint if logged like in tutorial
 # 3. Check images folder. Keep in mind that new image structure will be added for stadia
 # 4. Add index home page - to add links to GitHub, LinkedIn, Docs, how to use
