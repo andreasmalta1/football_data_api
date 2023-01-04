@@ -59,6 +59,8 @@ def get_teams(
     skip: int = 0,
     search: Optional[str] = "",
 ):
+    
+    print('Helllooooo')
 
     results = (
         db.query(models.Team)
