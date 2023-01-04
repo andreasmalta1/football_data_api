@@ -20,15 +20,18 @@ except ImportError:
 router = APIRouter(prefix="/api/teams", tags=["Teams"])
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/andreas/",
+    status_code=status.HTTP_201_CREATED,
+    response_model=schemas.TeamResponse,
+    include_in_schema=False,
+)
 def create_team(
-    team,
+    team: schemas.TeamCreate,
     current_user: int = Depends(oauth2.get_current_user),
     db: Session = Depends(get_db),
 ):
-
-    print('helllooooo')
-    
+   
     if current_user.id != 1:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
