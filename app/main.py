@@ -4,10 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 try:
-    from app.routers import auth, favicon, logo, request, team, user
+    from app.routers import auth, logo, request, team, user
     from app.backend.general_pages.route_homepage import general_pages_router
 except ImportError:
-    from routers import auth, favicon, logo, request, team, user
+    from routers import auth, logo, request, team, user
     from backend.general_pages.route_homepage import general_pages_router
 
 app = FastAPI(
@@ -31,7 +31,6 @@ app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(auth.router)
-app.include_router(favicon.router)
 app.include_router(logo.router)
 app.include_router(request.router)
 app.include_router(team.router)
