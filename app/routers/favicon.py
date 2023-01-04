@@ -7,6 +7,6 @@ router = APIRouter(prefix="/favicon.ico")
 favicon_path = "https://thefootballdata.com/static/images/favicon/ball.ico"
 
 
-@router.get("/", include_in_schema=False)
+@router.get("", include_in_schema=False)
 def favicon():
     return FileResponse(favicon_path)
