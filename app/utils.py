@@ -88,6 +88,4 @@ def get_team_return(team):
 
     team_return["record_goals"] = record_goals
 
-    print(team_return)
-
     return team_return

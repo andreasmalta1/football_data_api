@@ -49,7 +49,8 @@ def create_team(
     return new_team
 
 
-@router.get("/", response_model=List[schemas.TeamResponse])
+# @router.get("/", response_model=List[schemas.TeamResponse])
+@router.get("/")
 def get_teams(
     request: Request,
     db: Session = Depends(get_db),
