@@ -32,13 +32,13 @@ def create_team(
     current_user: int = Depends(oauth2.get_current_user),
     db: Session = Depends(get_db),
 ):
-   
+
     if current_user.id != 1:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Unauthorized action",
         )
-     
+
     new_team = models.Team(**team.dict())
     db.add(new_team)
     db.commit()
@@ -57,8 +57,6 @@ def get_teams(
     skip: int = 0,
     search: Optional[str] = "",
 ):
-    
-    print('Helllooooo')
 
     results = (
         db.query(models.Team)

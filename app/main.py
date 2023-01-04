@@ -46,13 +46,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# New Tables for future
-# Competition
-# Stadium
-
-# https://www.akana.com/blog/what-is-api-monetization
-# https://www.linkedin.com/pulse/9-ways-promote-your-api-gj-de-wilde-we-re-hiring-/
-
-# 4. Add index home page - to add links to GitHub, LinkedIn, Docs, how to use
-# https://www.fastapitutorial.com/blog/serving-html-fastapi/
