@@ -27,6 +27,7 @@ router = APIRouter(prefix="/api/teams", tags=["Teams"])
     include_in_schema=False,
 )
 def create_team(
+    request: Request,
     team: schemas.TeamCreate,
     current_user: int = Depends(oauth2.get_current_user),
     db: Session = Depends(get_db),
@@ -38,13 +39,12 @@ def create_team(
             detail=f"Unauthorized action",
         )
      
-
     new_team = models.Team(**team.dict())
     db.add(new_team)
     db.commit()
     db.refresh(new_team)
 
-    # post_request(db, "teams", request)
+    post_request(db, "teams", request)
 
     return new_team
 
