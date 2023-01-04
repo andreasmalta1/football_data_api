@@ -59,15 +59,14 @@ def get_teams(
     search: Optional[str] = "",
 ):
 
-    # results = (
-    #     db.query(models.Team)
-    #     .filter(models.Team.full_name.contains(search))
-    #     .limit(limit)
-    #     .offset(skip)
-    #     .all()
-    # )
-
-    results = db.query(models.Team).all()
+    results = (
+        db.query(models.Team)
+        .filter(models.Team.full_name.contains(search))
+        .order_by(models.Team.id)
+        .limit(limit)
+        .offset(skip)
+        .all()
+    )
 
     return_results = [get_team_return(team) for team in results]
 
