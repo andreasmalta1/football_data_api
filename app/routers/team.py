@@ -32,7 +32,7 @@ def create_team(
     db: Session = Depends(get_db),
 ):
 
-    print('Helllooooo')
+    print('helllooooo')
     
     if current_user.id != 1:
         raise HTTPException(
