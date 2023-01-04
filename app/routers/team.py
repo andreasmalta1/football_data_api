@@ -21,7 +21,7 @@ router = APIRouter(prefix="/api/teams", tags=["Teams"])
 
 
 @router.post(
-    "/andreas",
+    "/",
     status_code=status.HTTP_201_CREATED,
     response_model=schemas.TeamResponse,
     include_in_schema=False,
