@@ -9,7 +9,7 @@ from fastapi import (
     File,
 )
 from sqlalchemy.orm import Session
-from PIL import Image
+from PIL import Image, ImageOps
 import os
 
 try:
@@ -96,10 +96,12 @@ async def create_logo(
         with open(logo_types.get(logo).get("path"), "wb") as file:
             file.write(file_content)
 
+        size = logo_types.get(logo).get("size")
         img = Image.open(logo_types.get(logo).get("path"))
-        img = img.resize(
-            size=(logo_types.get(logo).get("size"), logo_types.get(logo).get("size"))
-        )
+        # img = img.resize(
+        #     size=(logo_types.get(logo).get("size"), logo_types.get(logo).get("size"))
+        # )
+        img = ImageOps.contain(img, (size, size))
         img.save(logo_types.get(logo).get("path"))
 
         setattr(
