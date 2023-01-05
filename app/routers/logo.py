@@ -97,10 +97,8 @@ async def create_logo(
             file.write(file_content)
 
         size = logo_types.get(logo).get("size")
+
         img = Image.open(logo_types.get(logo).get("path"))
-        # img = img.resize(
-        #     size=(logo_types.get(logo).get("size"), logo_types.get(logo).get("size"))
-        # )
         img = ImageOps.contain(img, (size, size))
         img.save(logo_types.get(logo).get("path"))
 
