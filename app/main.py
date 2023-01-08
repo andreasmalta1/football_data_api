@@ -10,6 +10,19 @@ except ImportError:
     from routers import auth, favicon, logo, request, team, user
     from backend.general_pages.route_homepage import general_pages_router
 
+
+tags_metadata = [
+    {
+        "name": "Teams",
+        "description": "Operations with teams",
+    },
+    {
+        "name": "Logos",
+        "description": "Operations with logos",
+    },
+]
+
+
 app = FastAPI(
     title="Football Data Api",
     description="API for football data containibg teams in Europe's top 5 leagues and beyond, stadiums and competions and corresponding logos",
@@ -23,6 +36,7 @@ app = FastAPI(
         "name": "Apache 2.0",
         "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
     },
+    openapi_tags=tags_metadata,
 )
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
