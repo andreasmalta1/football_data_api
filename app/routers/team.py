@@ -1,4 +1,5 @@
 from fastapi import status, APIRouter, HTTPException, Response, Depends, Request
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import List, Optional
 import random
@@ -55,12 +56,25 @@ def get_teams(
     db: Session = Depends(get_db),
     limit: int = 10,
     skip: int = 0,
-    search: Optional[str] = "",
+    full_name: Optional[str] = "",
+    name: Optional[str] = "",
+    code: Optional[str] = "",
+    nickname: Optional[str] = "",
+    stadium: Optional[str] = "",
+    competition: Optional[str] = "",
+    country: Optional[str] = "",
+    # national_team: Optional[bool]
 ):
 
     results = (
         db.query(models.Team)
-        .filter(models.Team.full_name.contains(search))
+        .filter(func.lower(models.Team.full_name).contains(full_name.lower()))
+        .filter(func.lower(models.Team.name).contains(name.lower()))
+        .filter(func.lower(models.Team.code).contains(code.lower()))
+        .filter(func.lower(models.Team.nickname).contains(nickname.lower()))
+        .filter(func.lower(models.Team.stadium).contains(stadium.lower()))
+        .filter(func.lower(models.Team.competition).contains(competition.lower()))
+        .filter(func.lower(models.Team.country).contains(country.lower()))
         .order_by(models.Team.id)
         .limit(limit)
         .offset(skip)
@@ -75,9 +89,31 @@ def get_teams(
 
 
 @router.get("/random", response_model=schemas.TeamResponse)
-def get_random_team(request: Request, db: Session = Depends(get_db)):
+def get_random_team(
+    request: Request,
+    db: Session = Depends(get_db),
+    full_name: Optional[str] = "",
+    name: Optional[str] = "",
+    code: Optional[str] = "",
+    nickname: Optional[str] = "",
+    stadium: Optional[str] = "",
+    competition: Optional[str] = "",
+    country: Optional[str] = "",
+    # national_team: Optional[bool]
+):
 
-    results = db.query(models.Team).all()
+    results = (
+        db.query(models.Team)
+        .filter(func.lower(models.Team.full_name).contains(full_name.lower()))
+        .filter(func.lower(models.Team.name).contains(name.lower()))
+        .filter(func.lower(models.Team.code).contains(code.lower()))
+        .filter(func.lower(models.Team.nickname).contains(nickname.lower()))
+        .filter(func.lower(models.Team.stadium).contains(stadium.lower()))
+        .filter(func.lower(models.Team.competition).contains(competition.lower()))
+        .filter(func.lower(models.Team.country).contains(country.lower()))
+        .all()
+    )
+
     if not results:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
