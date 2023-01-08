@@ -47,7 +47,6 @@ class TeamResponse(TeamBase):
     record_appearances: Optional[Dict[str, str]] = Field(nullable=True)
     record_goals: Optional[Dict[str, str]] = Field(nullable=True)
     id: int
-    created_at: datetime
 
     class Config:
         orm_mode = True
