@@ -108,6 +108,12 @@ def get_random_team(
     results = db.query(models.Team)
 
     for key in params_dict:
+        if key == "national" and params_dict[key] is not None:
+            results = results.filter(
+                models.Team.national_team == params_dict["national"]
+            )
+            continue
+
         if params_dict[key]:
             results = results.filter(
                 func.lower(getattr(models.Team, key)).contains(params_dict[key].lower())
