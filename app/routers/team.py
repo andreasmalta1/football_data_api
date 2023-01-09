@@ -2,6 +2,7 @@ from fastapi import status, APIRouter, HTTPException, Response, Depends, Request
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from typing import List, Optional
+from pydantic import create_model
 import random
 
 try:
@@ -19,6 +20,19 @@ except ImportError:
 
 
 router = APIRouter(prefix="/api/teams", tags=["Teams"])
+
+query_params = {
+    "name": (str, None),
+    "code": (str, None),
+    "nickname": (str, None),
+    "stadium": (str, None),
+    "competition": (str, None),
+    "country": (str, None),
+    "location": (str, None),
+    "national": (bool, None),
+}
+
+query_model = create_model("Query", **query_params)
 
 
 @router.post(
@@ -56,32 +70,25 @@ def get_teams(
     db: Session = Depends(get_db),
     limit: int = 10,
     skip: int = 0,
-    full_name: Optional[str] = "",
-    name: Optional[str] = "",
-    code: Optional[str] = "",
-    nickname: Optional[str] = "",
-    stadium: Optional[str] = "",
-    competition: Optional[str] = "",
-    country: Optional[str] = "",
-    location: Optional[str] = "",
-    # national_team: Optional[bool]
+    params: query_model = Depends(),
 ):
 
-    results = (
-        db.query(models.Team)
-        .filter(func.lower(models.Team.full_name).contains(full_name.lower()))
-        .filter(func.lower(models.Team.name).contains(name.lower()))
-        .filter(func.lower(models.Team.code).contains(code.lower()))
-        .filter(func.lower(models.Team.nickname).contains(nickname.lower()))
-        .filter(func.lower(models.Team.stadium).contains(stadium.lower()))
-        .filter(func.lower(models.Team.competition).contains(competition.lower()))
-        .filter(func.lower(models.Team.country).contains(country.lower()))
-        .filter(func.lower(models.Team.location).contains(location.lower()))
-        .order_by(models.Team.id)
-        .limit(limit)
-        .offset(skip)
-        .all()
-    )
+    params_dict = params.dict()
+    results = db.query(models.Team)
+
+    for key in params_dict:
+        if key == "national" and params_dict[key] is not None:
+            results = results.filter(
+                models.Team.national_team == params_dict["national"]
+            )
+            continue
+
+        if params_dict[key]:
+
+            results = results.filter(
+                func.lower(getattr(models.Team, key)).contains(params_dict[key].lower())
+            )
+    results = results.order_by(models.Team.id).limit(limit).offset(skip).all()
 
     return_results = [get_team_return(team) for team in results]
 
@@ -94,29 +101,19 @@ def get_teams(
 def get_random_team(
     request: Request,
     db: Session = Depends(get_db),
-    full_name: Optional[str] = "",
-    name: Optional[str] = "",
-    code: Optional[str] = "",
-    nickname: Optional[str] = "",
-    stadium: Optional[str] = "",
-    competition: Optional[str] = "",
-    country: Optional[str] = "",
-    location: Optional[str] = "",
-    # national_team: Optional[bool]
+    params: query_model = Depends(),
 ):
 
-    results = (
-        db.query(models.Team)
-        .filter(func.lower(models.Team.full_name).contains(full_name.lower()))
-        .filter(func.lower(models.Team.name).contains(name.lower()))
-        .filter(func.lower(models.Team.code).contains(code.lower()))
-        .filter(func.lower(models.Team.nickname).contains(nickname.lower()))
-        .filter(func.lower(models.Team.stadium).contains(stadium.lower()))
-        .filter(func.lower(models.Team.competition).contains(competition.lower()))
-        .filter(func.lower(models.Team.country).contains(country.lower()))
-        .filter(func.lower(models.Team.location).contains(location.lower()))
-        .all()
-    )
+    params_dict = params.dict()
+    results = db.query(models.Team)
+
+    for key in params_dict:
+        if params_dict[key]:
+            results = results.filter(
+                func.lower(getattr(models.Team, key)).contains(params_dict[key].lower())
+            )
+
+    results = results.all()
 
     if not results:
         raise HTTPException(
