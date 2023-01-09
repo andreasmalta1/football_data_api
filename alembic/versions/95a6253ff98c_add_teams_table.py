@@ -37,7 +37,7 @@ def upgrade() -> None:
         sa.Column("logo_url_large", sa.String(), nullable=True),
         sa.Column("twitter_handle", sa.String(), nullable=True),
         sa.Column("website", sa.String(), nullable=True),
-        sa.Column("national_team", sa.String(), nullable=True),
+        sa.Column("national_team", sa.Boolean(), nullable=True),
         sa.Column("year_formed", sa.Integer(), nullable=True),
         sa.Column("player_record_appearances", sa.String(), nullable=True),
         sa.Column(
