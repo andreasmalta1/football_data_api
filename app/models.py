@@ -20,6 +20,7 @@ class Team(Base):
     stadium = Column(String, nullable=True)
     competition = Column(String, nullable=True)
     country = Column(String, nullable=True)
+    location = Column(String, nullable=True)
     logo_url_small = Column(String, nullable=True)
     logo_url_medium = Column(String, nullable=True)
     logo_url_large = Column(String, nullable=True)

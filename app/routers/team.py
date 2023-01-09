@@ -63,6 +63,7 @@ def get_teams(
     stadium: Optional[str] = "",
     competition: Optional[str] = "",
     country: Optional[str] = "",
+    location: Optional[str] = "",
     # national_team: Optional[bool]
 ):
 
@@ -75,6 +76,7 @@ def get_teams(
         .filter(func.lower(models.Team.stadium).contains(stadium.lower()))
         .filter(func.lower(models.Team.competition).contains(competition.lower()))
         .filter(func.lower(models.Team.country).contains(country.lower()))
+        .filter(func.lower(models.Team.location).contains(location.lower()))
         .order_by(models.Team.id)
         .limit(limit)
         .offset(skip)
@@ -99,6 +101,7 @@ def get_random_team(
     stadium: Optional[str] = "",
     competition: Optional[str] = "",
     country: Optional[str] = "",
+    location: Optional[str] = "",
     # national_team: Optional[bool]
 ):
 
@@ -111,6 +114,7 @@ def get_random_team(
         .filter(func.lower(models.Team.stadium).contains(stadium.lower()))
         .filter(func.lower(models.Team.competition).contains(competition.lower()))
         .filter(func.lower(models.Team.country).contains(country.lower()))
+        .filter(func.lower(models.Team.location).contains(location.lower()))
         .all()
     )
 

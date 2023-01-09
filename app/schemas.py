@@ -29,6 +29,7 @@ class TeamBase(BaseModel):
     national_team: Optional[bool]
     year_formed: Optional[int]
     country: Optional[str]
+    location: Optional[str]
     num_domestic_champions: Optional[int]
 
 
