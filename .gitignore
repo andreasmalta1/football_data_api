@@ -3,4 +3,5 @@ __pycache__
 .env
 **/*.jpg
 **/*.png
-post_data
+login.json
+service_account.json
