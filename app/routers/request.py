@@ -1,8 +1,5 @@
-from fastapi import status, APIRouter, HTTPException, Response, Depends, Request
-from sqlalchemy import func
+from fastapi import status, APIRouter, HTTPException, Depends, Request
 from sqlalchemy.orm import Session
-from typing import List, Optional
-import random
 
 try:
     from app.database import get_db

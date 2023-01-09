@@ -1,7 +1,7 @@
 from fastapi import status, APIRouter, HTTPException, Response, Depends, Request
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import List
 from pydantic import create_model
 import random
 
