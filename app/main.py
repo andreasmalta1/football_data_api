@@ -29,11 +29,11 @@ TheFootballData API ⚽ provides data for Europe's top 5 football leagues and be
 
 You can get teams with information including name, nickname, stadium, competition, country, location, logos, website, year formed and player records
 
-## Competitions (_not implemented_)
+## Competitions (not implemented)
 
 You can retrieve several information on different competions around Europe
 
-## Stadiums (_not implemented_)
+## Stadiums (not implemented)
 
 You can retrieve several information on different stadiums around Europe 
 <br/><br/>
