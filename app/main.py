@@ -32,8 +32,8 @@ Please see each get request for more information including query parameters
 app = FastAPI(
     title="Football Data Api",
     description=description,
-    version="0.0.1",
-    terms_of_service="",
+    swagger_ui_parameters={"defaultModelsExpandDepth": -1},
+    version="1.0.0",
     contact={
         "name": "Andreas Calleja",
         "email": "andreascalleja@gmail.com",
