@@ -1,26 +1,25 @@
 import os
 
 club_list = [
-    "Atalanta",
-    "Bologna",
-    "Cremonese",
-    "Empoli",
-    "Spezia",
-    "Fiorentina",
-    "Verona",
-    "Inter",
-    "Juventus",
-    "Lazio",
-    "Lecce",
-    "Milan",
-    "Monza",
-    "Napoli",
-    "Roma",
-    "Salernitana",
-    "Sampdoria",
-    "Sassuolo",
-    "Torino",
-    "Udinese",
+    "Almeria",
+    "Bilbao",
+    "Atletico",
+    "Barcelona",
+    "Cadiz",
+    "Celta",
+    "Elche",
+    "Espanyol",
+    "Getafe",
+    "Girona",
+    "Mallorca",
+    "Osasuna",
+    "Rayo",
+    "Real Madrid" "Betis",
+    "Sociedad",
+    "Seville",
+    "Valencia",
+    "Valladolid",
+    "Villarreal",
 ]
 
 logos_dir = (
@@ -33,12 +32,13 @@ def partial(lst, query):
 
 
 list_logos = os.listdir(logos_dir)
+print(list_logos)
 
 for index, club in enumerate(club_list):
-    if partial(list_logos, club.lower()):
-        logo = partial(list_logos, club.lower())[0]
+    if partial(list_logos, club):
+        logo = partial(list_logos, club)[0]
         logo_new_name = logo.split(".")
-        logo_new_name[0] = str(index + 21)
+        logo_new_name[0] = str(index + 41)
         logo_new_name = ".".join(logo_new_name)
         print(logo)
         print(logo_new_name)
