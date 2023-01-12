@@ -1,7 +1,7 @@
 env
 __pycache__
 .env
-**/*.jpg
-**/*.png
 login.json
 service_account.json
+logos_to_upload
+rename_logos.py
