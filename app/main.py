@@ -14,30 +14,17 @@ except ImportError:
 tags_metadata = [
     {
         "name": "Teams",
-        "description": "GET request for teams",
+        "description": "You can get teams with information including name, nickname, stadium, competition, country, location, logos, website, year formed and player records",
     },
     {
         "name": "Logos",
-        "description": "Get request for team logos",
+        "description": "Get request for team logos returning 3 urls for a small, medium and large sized logo",
     },
 ]
 
 description = """
 TheFootballData API ⚽ provides data for Europe's top 5 football leagues and beyond, including information on teams, competitions, nations, and stadiums. It also includes logos for each entity. The API is constantly updated with new data. If any data is missing or incorrect, contact me on andreascalleja@gmail.com have it fixed. 💻
-
-## Teams
-
-You can get teams with information including name, nickname, stadium, competition, country, location, logos, website, year formed and player records
-
-## Competitions (not implemented)
-
-You can retrieve several information on different competions around Europe
-
-## Stadiums (not implemented)
-
-You can retrieve several information on different stadiums around Europe 
-<br/><br/>
-<br/><br/>
+<br></br>
 Please see each get request for more information including query parameters
 """
 
