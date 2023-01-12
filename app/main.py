@@ -4,11 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 try:
-    from app.routers import auth, favicon, logo, request, team, user
-    from app.backend.general_pages.route_homepage import general_pages_router
+    from app.routers import auth, favicon, homepage, logo, request, team, user
 except ImportError:
-    from routers import auth, favicon, logo, request, team, user
-    from backend.general_pages.route_homepage import general_pages_router
+    from routers import auth, favicon, homepage, logo, request, team, user
 
 
 tags_metadata = [
@@ -52,7 +50,7 @@ app.include_router(logo.router)
 app.include_router(request.router)
 app.include_router(team.router)
 app.include_router(user.router)
-app.include_router(general_pages_router)
+app.include_router(homepage.router)
 
 origins = ["*"]
 
