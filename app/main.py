@@ -35,8 +35,9 @@ You can retrieve several information on different competions around Europe
 
 ## Stadiums (_not implemented_)
 
-You can retrieve several information on different stadiums around Europe
-
+You can retrieve several information on different stadiums around Europe 
+<br/><br/>
+<br/><br/>
 Please see each get request for more information including query parameters
 """
 
