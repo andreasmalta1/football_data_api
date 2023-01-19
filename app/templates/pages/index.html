@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="thefootballdata.com" content="Nofoobar" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <link
+      href="{{ url_for('static', path='css/style.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>
+      <h1>Welcome to TheFootballData API</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#documentation">Documentation</a></li>
+        <li><a href="/teams">Teams</a></li>
+        <li><a href="/competitions">Competitions</a></li>
+        <li><a href="/stadiums">Stadiums</a></li>
+        <li><a href="/logos">Logos</a></li>
+      </ul>
+    </nav>
+    <main>
+      <section id="getting-started">
+        <h2>Getting Started</h2>
+        <p>
+          To get started with the European Football Data API, you will need to
+          sign up for an API key. Once you have your key, you can start making
+          requests to the API by including it in the headers of your requests.
+        </p>
+        <a href="/signup">Sign up for an API key</a>
+      </section>
+      <section id="documentation">
+        <h2>Documentation</h2>
+        <p>
+          For detailed information on how to use the European Football Data API,
+          please refer to our documentation.
+        </p>
+        <a href="/docs">View API documentation</a>
+      </section>
+    </main>
+  </body>
+</html>
