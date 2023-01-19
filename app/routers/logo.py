@@ -28,7 +28,7 @@ except ImportError:
     import oauth2
 
 
-router = APIRouter(prefix="/api/logos", tags=["Logos"])
+router = APIRouter(prefix="/api/images/teams", tags=["Logos"])
 
 LOGO_FIELDS = ["logo_url_small", "logo_url_medium", "logo_url_large"]
 
