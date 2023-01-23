@@ -4,7 +4,7 @@ from login import login
 
 
 def post_logos():
-    logos_url = "https://thefootballdata.com/api/logos"
+    logos_url = "https://thefootballdata.com/api/images/teams"
 
     access_token = login()
     post_headers = {"Authorization": "Bearer " + access_token}
