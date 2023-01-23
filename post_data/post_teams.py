@@ -19,7 +19,7 @@ def post_teams():
     for row in values:
         post_payload = {}
         for index, column in enumerate(row):
-            post_payload[header_column[index]] = column
+            post_payload[header_column[index]] = column.strip()
         response = requests.post(post_url, headers=post_headers, json=post_payload)
 
         print(response)
